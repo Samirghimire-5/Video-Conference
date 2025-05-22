@@ -39,14 +39,14 @@ export default function LandingPage() {
               <Button asChild size="lg" className="bg-[#0070f3] hover:bg-[#0060d3] text-white">
                 <Link href="/register">Get Started</Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
+              <Button asChild variant="outline" size="lg" className="border-white text-black hover:bg-white/50">
                 <Link href="/login">Login</Link>
               </Button>
             </div>
           </div>
           <div className="relative h-[300px] md:h-[400px] lg:h-[500px]">
             <Image
-              src="/placeholder.svg?height=500&width=500"
+              src="/meme_2.png"
               alt="Video conference illustration"
               fill
               className="object-contain"
