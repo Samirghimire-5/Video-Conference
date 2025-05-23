@@ -26,7 +26,7 @@ const registerUser = async (req: Request, res: Response): Promise<void> => {
 
 const loginUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { email, password } = req.body;
+    const { email, password, rememberMe } = req.body;
 
     const user = await User.findOne({ email });
     if (!user) {
@@ -42,12 +42,12 @@ const loginUser = async (req: Request, res: Response): Promise<void> => {
       const token = jwt.sign(
         { userId: user._id },
         `${process.env.JWT_SECRET}`,
-        { expiresIn: "7d" }
+        { expiresIn: rememberMe ? "30d" : "1d" }
       );
 
       res.cookie("token", token, {
         httpOnly: true,
-        maxAge: 7 * 24 * 60 * 60 * 1000,
+        maxAge: rememberMe ? 30 * 24 * 60 * 60 * 1000 : 1 * 24 * 60 * 60 * 1000,
         secure: process.env.NODE_ENV === "production",
         sameSite: "none",
       });
@@ -68,4 +68,4 @@ const logoutUser = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { registerUser, loginUser };
+export { registerUser, loginUser, logoutUser };

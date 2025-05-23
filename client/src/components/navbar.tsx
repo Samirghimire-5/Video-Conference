@@ -1,5 +1,5 @@
-import Link from "next/link"
-import { Video } from "lucide-react"
+import Link from "next/link";
+import { Video } from "lucide-react";
 
 export default function Navbar() {
   return (
@@ -11,7 +11,10 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center gap-4">
-          <Link href="/login" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
+          <Link
+            href="/login"
+            className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
+          >
             Login
           </Link>
           <Link
@@ -23,5 +26,5 @@ export default function Navbar() {
         </div>
       </div>
     </header>
-  )
+  );
 }

@@ -1,23 +1,22 @@
-import Link from "next/link"
-import Image from "next/image"
-import { ArrowRight, Globe, Shield, Video } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import BackgroundAnimation from "@/components/background-animation"
-import Navbar from "@/components/navbar"
-import Footer from "@/components/footer"
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowRight, Globe, Shield, Video } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import BackgroundAnimation from "@/components/background-animation";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 interface Feature {
-  icon: React.ReactNode
-  title: string
-  description: string
+  icon: React.ReactNode;
+  title: string;
+  description: string;
 }
 
 interface TestimonialCard {
-  quote: string
-  author: string
-  role: string
+  quote: string;
+  author: string;
+  role: string;
 }
-
 
 export default function LandingPage() {
   return (
@@ -30,16 +29,27 @@ export default function LandingPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-              Connect Instantly with <span className="text-[#0070f3]">YapYap</span>
+              Connect Instantly with{" "}
+              <span className="text-[#0070f3]">YapYap</span>
             </h1>
             <p className="text-lg md:text-xl text-gray-300 max-w-lg">
-              High-quality video conferencing, screen sharing, and more. Connect with anyone, anywhere, anytime.
+              High-quality video conferencing, screen sharing, and more. Connect
+              with anyone, anywhere, anytime.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button asChild size="lg" className="bg-[#0070f3] hover:bg-[#0060d3] text-white">
+              <Button
+                asChild
+                size="lg"
+                className="bg-[#0070f3] hover:bg-[#0060d3] text-white"
+              >
                 <Link href="/register">Get Started</Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-white text-black hover:bg-white/50">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="border-white text-black hover:bg-white/50"
+              >
                 <Link href="/login">Login</Link>
               </Button>
             </div>
@@ -59,9 +69,12 @@ export default function LandingPage() {
       {/* Features Section */}
       <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose YapYap?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Why Choose YapYap?
+          </h2>
           <p className="text-gray-300 max-w-2xl mx-auto">
-            Our platform is designed to make video conferencing simple, secure, and seamless.
+            Our platform is designed to make video conferencing simple, secure,
+            and seamless.
           </p>
         </div>
 
@@ -87,9 +100,12 @@ export default function LandingPage() {
       {/* Testimonials Section */}
       <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative bg-white/5">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">What Our Users Say</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            What Our Users Say
+          </h2>
           <p className="text-gray-300 max-w-2xl mx-auto">
-            Join thousands of satisfied users who have transformed their communication with YapYap.
+            Join thousands of satisfied users who have transformed their
+            communication with YapYap.
           </p>
         </div>
 
@@ -115,11 +131,17 @@ export default function LandingPage() {
       {/* CTA Section */}
       <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
         <div className="bg-gradient-to-r from-[#0070f3]/20 to-purple-500/20 rounded-2xl p-8 md:p-12 backdrop-blur-sm">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to transform your virtual meetings?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Ready to transform your virtual meetings?
+          </h2>
           <p className="text-gray-300 max-w-2xl mx-auto mb-8">
             Join YapYap today and experience the future of video conferencing.
           </p>
-          <Button asChild size="lg" className="bg-[#0070f3] hover:bg-[#0060d3] text-white">
+          <Button
+            asChild
+            size="lg"
+            className="bg-[#0070f3] hover:bg-[#0060d3] text-white"
+          >
             <Link href="/register" className="flex items-center gap-2">
               Get Started <ArrowRight className="h-4 w-4" />
             </Link>
@@ -129,7 +151,7 @@ export default function LandingPage() {
 
       <Footer />
     </div>
-  )
+  );
 }
 
 function FeatureCard({ icon, title, description }: Feature) {
@@ -139,7 +161,7 @@ function FeatureCard({ icon, title, description }: Feature) {
       <h3 className="text-xl font-bold mb-2">{title}</h3>
       <p className="text-gray-300">{description}</p>
     </div>
-  )
+  );
 }
 
 function TestimonialCard({ quote, author, role }: TestimonialCard) {
@@ -152,5 +174,5 @@ function TestimonialCard({ quote, author, role }: TestimonialCard) {
         <p className="text-gray-400 text-sm">{role}</p>
       </div>
     </div>
-  )
+  );
 }

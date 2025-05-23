@@ -1,69 +1,43 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { ArrowLeft, AtSign, Lock } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
-import BackgroundAnimation from "@/components/background-animation"
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import Link from "next/link";
+import { ArrowLeft, AtSign, Lock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import BackgroundAnimation from "@/components/background-animation";
+import { loginSchema } from "./schema";
+
+type FormData = yup.InferType<typeof loginSchema>;
 
 export default function LoginPage() {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    rememberMe: false,
-  })
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm<FormData>({
+    resolver: yupResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      rememberMe: false,
+    },
+  });
 
-  const [errors, setErrors] = useState({
-    email: "",
-    password: "",
-  })
-
-  const validateForm = () => {
-    let isValid = true
-    const newErrors = { email: "", password: "" }
-
-    if (!formData.email) {
-      newErrors.email = "Email is required"
-      isValid = false
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address"
-      isValid = false
-    }
-
-    if (!formData.password) {
-      newErrors.password = "Password is required"
-      isValid = false
-    }
-
-    setErrors(newErrors)
-    return isValid
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (validateForm()) {
-      // Handle login logic here
-      console.log("Login form submitted:", formData)
-    }
-  }
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-  }
+  const onSubmit = (data: FormData) => {
+    // Handle login logic here
+    console.log("Login form submitted:", data);
+  };
 
   const handleCheckboxChange = (checked: boolean) => {
-    setFormData((prev) => ({
-      ...prev,
-      rememberMe: checked,
-    }))
-  }
+    setValue("rememberMe", checked);
+  };
 
   return (
     <div className="relative min-h-screen bg-black text-white flex items-center justify-center px-4">
@@ -71,7 +45,10 @@ export default function LoginPage() {
 
       <div className="w-full max-w-md z-10">
         <div className="mb-8">
-          <Link href="/" className="text-gray-400 hover:text-white flex items-center gap-2 transition-colors">
+          <Link
+            href="/"
+            className="text-gray-400 hover:text-white flex items-center gap-2 transition-colors"
+          >
             <ArrowLeft className="h-4 w-4" />
             Back to home
           </Link>
@@ -80,31 +57,38 @@ export default function LoginPage() {
         <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold mb-2">Login to YapYap</h1>
-            <p className="text-gray-400">Welcome back! Please enter your details.</p>
+            <p className="text-gray-400">
+              Welcome back! Please enter your details.
+            </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <div className="relative">
                 <AtSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <Input
                   id="email"
-                  name="email"
+                  {...register("email")}
                   type="email"
                   placeholder="name@example.com"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`pl-10 bg-white/5 border-white/10 text-white ${errors.email ? "border-red-500" : ""}`}
+                  className={`pl-10 bg-white/5 border-white/10 text-white ${
+                    errors.email ? "border-red-500" : ""
+                  }`}
                 />
               </div>
-              {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email.message}</p>
+              )}
             </div>
 
             <div className="space-y-2">
               <div className="flex justify-between items-center">
                 <Label htmlFor="password">Password</Label>
-                <Link href="#" className="text-sm text-[#0070f3] hover:underline">
+                <Link
+                  href="#"
+                  className="text-sm text-[#0070f3] hover:underline"
+                >
                   Forgot password?
                 </Link>
               </div>
@@ -112,21 +96,23 @@ export default function LoginPage() {
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <Input
                   id="password"
-                  name="password"
+                  {...register("password")}
                   type="password"
                   placeholder="••••••••"
-                  value={formData.password}
-                  onChange={handleChange}
-                  className={`pl-10 bg-white/5 border-white/10 text-white ${errors.password ? "border-red-500" : ""}`}
+                  className={`pl-10 bg-white/5 border-white/10 text-white ${
+                    errors.password ? "border-red-500" : ""
+                  }`}
                 />
               </div>
-              {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+              {errors.password && (
+                <p className="text-red-500 text-sm">{errors.password.message}</p>
+              )}
             </div>
 
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="remember"
-                checked={formData.rememberMe}
+                checked={watch("rememberMe")}
                 onCheckedChange={handleCheckboxChange}
                 className="data-[state=checked]:bg-[#0070f3] data-[state=checked]:border-[#0070f3]"
               />
@@ -138,7 +124,10 @@ export default function LoginPage() {
               </label>
             </div>
 
-            <Button type="submit" className="w-full bg-[#0070f3] hover:bg-[#0060d3]">
+            <Button
+              type="submit"
+              className="w-full bg-[#0070f3] hover:bg-[#0060d3]"
+            >
               Sign in
             </Button>
 
@@ -156,15 +145,23 @@ export default function LoginPage() {
                 <div className="w-full border-t border-white/10"></div>
               </div>
               <div className="relative flex justify-center text-xs">
-                <span className="bg-black px-2 text-gray-400">Or continue with</span>
+                <span className="bg-black px-2 text-gray-400">
+                  Or continue with
+                </span>
               </div>
             </div>
 
             <div className="mt-6 grid grid-cols-2 gap-4">
-              <Button variant="outline" className="bg-black/10 border-white/10 hover:bg-white/5 hover:text-white text-white">
+              <Button
+                variant="outline"
+                className="bg-black/10 border-white/10 hover:bg-white/5 hover:text-white text-white"
+              >
                 Google
               </Button>
-              <Button variant="outline" className="bg-black/10 border-white/10 hover:bg-white/5 hover:text-white text-white">
+              <Button
+                variant="outline"
+                className="bg-black/10 border-white/10 hover:bg-white/5 hover:text-white text-white"
+              >
                 Microsoft
               </Button>
             </div>
@@ -172,5 +169,5 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

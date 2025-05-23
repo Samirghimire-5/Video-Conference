@@ -1,4 +1,3 @@
-import { timeStamp } from "console";
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
@@ -14,6 +13,10 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
+      required: true,
+    },
+    agreeToTerms: {
+      type: Boolean,
       required: true,
     },
   },

@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { loginUser, registerUser } from "../controllers/user";
+import { loginUser, logoutUser, registerUser } from "../controllers/user";
 const app: Router = Router();
 
-app.post("register", registerUser)
-app.post("login", loginUser)
+app.post("/api/register", registerUser)
+app.post("/api/login", loginUser)
+app.delete("/api/logout", logoutUser)
 
 export default app
