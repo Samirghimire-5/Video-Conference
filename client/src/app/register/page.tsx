@@ -11,10 +11,15 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import BackgroundAnimation from "@/components/background-animation";
 import { registerSchema } from "./schema";
-
+import { useRegistration } from "@/lib/api/userApi";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 type FormData = yup.InferType<typeof registerSchema>;
 
 export default function RegisterPage() {
+  const { mutate, isPending } = useRegistration();
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -33,8 +38,16 @@ export default function RegisterPage() {
   });
 
   const onSubmit = (data: FormData) => {
-    // Handle registration logic here
-    console.log("Registration form submitted:", data);
+    mutate(data, {
+      onSuccess: (response) => {
+        toast.success(`${response?.message}`);
+        router.push("/login");
+      },
+      onError: (error: any) => {
+        const errorMessage = error?.response?.data?.error || "Registration failed try again";
+        toast.error(errorMessage);
+      }
+    });
   };
 
   const handleCheckboxChange = (checked: boolean) => {
@@ -177,8 +190,9 @@ export default function RegisterPage() {
             <Button
               type="submit"
               className="w-full bg-[#0070f3] hover:bg-[#0060d3]"
+              disabled={isPending}
             >
-              Create Account
+              {isPending ? "Creating..." : "Create Account"}
             </Button>
 
             <div className="text-center text-sm text-gray-400">

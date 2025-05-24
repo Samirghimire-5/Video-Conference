@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import ReduxProvider from "@/lib/redux/provider/reduxProvider";
+import ReduxProvider from "@/providers/reduxProvider";
+import { QueryProvider } from "@/providers/query-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,10 +30,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ReduxProvider>
-          {children}
-          <Toaster />
-        </ReduxProvider>
+        <QueryProvider>
+          <ReduxProvider>
+            {children}
+            <Toaster position="top-right"/>
+          </ReduxProvider>
+        </QueryProvider>
       </body>
     </html>
   );

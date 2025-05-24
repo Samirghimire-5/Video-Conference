@@ -11,10 +11,19 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import BackgroundAnimation from "@/components/background-animation";
 import { loginSchema } from "./schema";
+import { uselogin } from "@/lib/api/userApi";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { onLogin } from "@/lib/redux/user/userSlice";
 
 type FormData = yup.InferType<typeof loginSchema>;
 
 export default function LoginPage() {
+  const { mutate, isPending } = uselogin();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
   const {
     register,
     handleSubmit,
@@ -31,8 +40,17 @@ export default function LoginPage() {
   });
 
   const onSubmit = (data: FormData) => {
-    // Handle login logic here
-    console.log("Login form submitted:", data);
+    mutate(data, {
+      onSuccess: (response) => {
+        toast.success(`${response?.message}`);
+        dispatch(onLogin(response.user))
+        router.push("/dashboard");
+      },
+      onError: (error: any) => {
+        const errorMessage = error?.response?.data?.error || "Login failed try again";
+        toast.error(errorMessage);
+      }
+    })
   };
 
   const handleCheckboxChange = (checked: boolean) => {

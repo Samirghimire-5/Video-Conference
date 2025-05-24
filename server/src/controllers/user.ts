@@ -5,7 +5,7 @@ import { Request, Response } from "express";
 
 const registerUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, agreeToTerms } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -16,10 +16,11 @@ const registerUser = async (req: Request, res: Response): Promise<void> => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const user = await User.create({ name, email, password: hashedPassword });
-    res.status(201).json({ message: "User registered successfully", user });
+    const user = await User.create({ name, email, password: hashedPassword, agreeToTerms });
+    res.status(201).json({ message: "User registered successfully" });
     return;
   } catch (error) {
+    // console.log("registrationerror", error);
     res.status(500).json({ error: "Failed to register user" });
   }
 };
