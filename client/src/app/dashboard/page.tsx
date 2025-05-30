@@ -12,7 +12,9 @@ const Dashboard = () => {
    })
  })
   return (
-    <div>Dashboard</div>
+    <div>
+      hi
+    </div>
   )
 }
 
