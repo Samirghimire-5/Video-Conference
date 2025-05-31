@@ -5,7 +5,7 @@ import { LoginInput, RegisterInput } from "../types/userTypes";
 export const registerUser = async (userData: RegisterInput) => {
   const response = await axios.post(
     `${process.env.NEXT_PUBLIC_API}/register`,
-    userData
+    userData,
   );
   return response.data;
 };
@@ -13,7 +13,10 @@ export const registerUser = async (userData: RegisterInput) => {
 export const loginUser = async (userData: LoginInput) => {
   const response = await axios.post(
     `${process.env.NEXT_PUBLIC_API}/login`,
-    userData
+    userData,
+    {
+      withCredentials: true,
+    }
   );
   return response.data;
 };

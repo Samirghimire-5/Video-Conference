@@ -16,7 +16,12 @@ const registerUser = async (req: Request, res: Response): Promise<void> => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const user = await User.create({ name, email, password: hashedPassword, agreeToTerms });
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      agreeToTerms,
+    });
     res.status(201).json({ message: "User registered successfully" });
     return;
   } catch (error) {
@@ -39,21 +44,19 @@ const loginUser = async (req: Request, res: Response): Promise<void> => {
     if (!isPasswordValid) {
       res.status(401).json({ error: "Invalid password" });
       return;
-    } else {
-      const token = jwt.sign(
-        { userId: user._id },
-        `${process.env.JWT_SECRET}`,
-        { expiresIn: rememberMe ? "30d" : "1d" }
-      );
-
-      res.cookie("token", token, {
-        httpOnly: true,
-        maxAge: rememberMe ? 30 * 24 * 60 * 60 * 1000 : 1 * 24 * 60 * 60 * 1000,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
-      });
-      res.status(200).json({ message: "User logged in successfully", user });
     }
+    const token = jwt.sign({ userId: user._id }, `${process.env.JWT_SECRET}`, {
+      expiresIn: rememberMe ? "30d" : "1d",
+    });
+
+    res.cookie("userToken", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "strict",
+      maxAge: rememberMe ? 30 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000,
+    });
+
+    res.status(200).json({ message: "User logged in successfully", user });
   } catch (error) {
     res.status(500).json({ error: "Failed to login user" });
   }
@@ -61,7 +64,7 @@ const loginUser = async (req: Request, res: Response): Promise<void> => {
 
 const logoutUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    res.clearCookie("token");
+    res.clearCookie("userToken");
     res.status(200).json({ message: "User logged out successfully" });
     return;
   } catch (error) {
